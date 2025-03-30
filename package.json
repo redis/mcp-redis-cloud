@@ -1,0 +1,55 @@
+{
+  "name": "mcp-redis-cloud",
+  "version": "1.0.0",
+  "description": "MCP Server for interacting with Redis Cloud API",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "redis-cloud-api-mcp-tool": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "lint": "eslint src/",
+    "test": "vitest",
+    "prepublishOnly": "npm run build",
+    "link": "npm link",
+    "unlink": "npm unlink"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@hey-api/client-fetch": "^0.8.3",
+    "@modelcontextprotocol/sdk": "^1.8.0",
+    "zod": "^3.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@hey-api/openapi-ts": "^0.64.13",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
