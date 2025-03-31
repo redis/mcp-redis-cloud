@@ -1,7 +1,7 @@
-# mcp-redis-cloud: Redis Cloud API MCP Server
+# Redis Cloud Admin API MCP Server
 
 
-Redis Cloud API Model Context Protocol (MCP) server written in TypeScript.
+Redis Cloud Admin API Model Context Protocol (MCP) server written in TypeScript.
 
 ## Getting Started
 
