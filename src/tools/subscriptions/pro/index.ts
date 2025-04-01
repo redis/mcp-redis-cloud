@@ -45,6 +45,8 @@ const localThroughputSchema = z.object({
   readOperationsPerSecond: z.number().int().optional(),
 });
 
+const subscriptionIdSchema = commonSchemas.subscriptionId;
+
 const createSubscriptionSchema = z.object({
   name: z.string().optional(),
   dryRun: z.boolean().optional(),
@@ -411,9 +413,27 @@ const GET_PRO_SUBSCRIPTIONS_TOOL: Tool = {
   inputSchema: emptySchema,
 };
 
+const GET_PRO_SUBSCRIPTION_TOOL: Tool = {
+  name: "get-pro-subscription",
+  description:
+    "Get pro subscription by ID. The payload must match the input schema.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      subscriptionId: {
+        type: "number",
+        description: "Subscription ID",
+        min: 1,
+      },
+    },
+    required: ["subscriptionId"],
+  },
+};
+
 export const SUBSCRIPTIONS_PRO_TOOLS = [
   CREATE_PRO_SUBSCRIPTION_TOOL,
   GET_PRO_SUBSCRIPTIONS_TOOL,
+  GET_PRO_SUBSCRIPTION_TOOL,
 ];
 
 export const SUBSCRIPTIONS_PRO_HANDLERS: ToolHandlers = {
@@ -489,5 +509,24 @@ export const SUBSCRIPTIONS_PRO_HANDLERS: ToolHandlers = {
       "Get pro subscriptions",
     );
     return createToolResponse(subscriptions);
+  },
+  "get-pro-subscription": async (request) => {
+    const { subscriptionId } = extractArguments<{
+      subscriptionId: number;
+    }>(request);
+
+    // Validate input
+    validateToolInput(
+      subscriptionIdSchema,
+      subscriptionId,
+      `Get pro subscription: ${subscriptionId}`,
+    );
+
+    const result = await executeApiCall(
+      () => SubscriptionsProService.getSubscriptionById(subscriptionId),
+      `Get pro subscription: ${subscriptionId}`,
+    );
+
+    return createToolResponse(result);
   },
 };
