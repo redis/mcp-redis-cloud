@@ -18,6 +18,10 @@ import {
   SUBSCRIPTIONS_PRO_HANDLERS,
   SUBSCRIPTIONS_PRO_TOOLS,
 } from "./tools/subscriptions/pro/index.js";
+import {
+  DATABASES_PRO_HANDLERS,
+  DATABASES_PRO_TOOLS,
+} from "./tools/databases/pro/index.js";
 
 process.on("uncaughtException", (error) => {
   log("Uncaught exception:", error);
@@ -34,6 +38,7 @@ const ALL_TOOLS = [
   ...SUBSCRIPTIONS_PRO_TOOLS,
   ...SUBSCRIPTIONS_ESSENTIALS_TOOLS,
   ...TASKS_TOOLS,
+  ...DATABASES_PRO_TOOLS,
 ];
 
 const ALL_HANDLERS = {
@@ -41,6 +46,7 @@ const ALL_HANDLERS = {
   ...SUBSCRIPTIONS_ESSENTIALS_HANDLERS,
   ...SUBSCRIPTIONS_PRO_HANDLERS,
   ...TASKS_HANDLERS,
+  ...DATABASES_PRO_HANDLERS,
 };
 
 const server = new Server(
