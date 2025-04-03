@@ -413,10 +413,8 @@ export const DATABASES_PRO_HANDLERS: ToolHandlers = {
     // Validate input
     validateToolInput(
       databaseCreateRequestSchema,
-      {
-        ...payloadArguments,
-      },
-      `Create pro database using subscription #: ${payloadArguments.subscriptionId}`,
+      payloadArguments,
+      `Create pro database using subscription: ${payloadArguments.subscriptionId}`,
     );
 
     const result = await executeApiCall(
