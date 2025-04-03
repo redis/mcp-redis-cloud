@@ -6,7 +6,7 @@
  * Redis list of Essentials subscriptions in current account
  */
 export type FixedSubscriptions = {
-    accountId?: number;
-    links?: Array<Record<string, Record<string, any>>>;
+  accountId?: number;
+  links?: Array<Record<string, Record<string, any>>>;
+  subscriptions?: Array<Record<string, any>>;
 };
-

@@ -5,13 +5,18 @@ import {
   FixedSubscriptionCreateRequest,
   SubscriptionsEssentialsService,
 } from "../../../clients/generated/index.js";
-import { emptySchema, commonSchemas } from "../../../utils/common/schemas.js";
+import { commonSchemas } from "../../../utils/common/schemas.js";
 import {
   createToolResponse,
   executeApiCall,
-  validateToolInput,
   extractArguments,
+  validateToolInput,
 } from "../../../utils/common/utils.js";
+import {
+  createPage,
+  DEFAULT_PAGE_SIZE,
+  Pageable,
+} from "../../../utils/common/pagination.js";
 
 // Schema definitions
 const subscriptionIdSchema = commonSchemas.subscriptionId;
@@ -26,14 +31,37 @@ const createSubscriptionSchema = z.object({
 const getPlansSchema = z.object({
   provider: commonSchemas.provider,
   redisFlex: z.boolean().default(false),
+  page: commonSchemas.page,
+  size: commonSchemas.size,
+});
+
+const getSubscriptionsSchema = z.object({
+  page: commonSchemas.page,
+  size: commonSchemas.size,
 });
 
 // Tool definitions
 const GET_ESSENTIAL_SUBSCRIPTIONS_TOOL: Tool = {
   name: "get-essential-subscriptions",
   description:
-    "Get the essential subscriptions for the current Cloud Redis account",
-  inputSchema: emptySchema,
+    "Get the essential subscriptions for the current Cloud Redis account. " +
+    "A paginated response is returned, and to get all the essential subscriptions, the page and size parameters must be used until all the essential subscriptions are retrieved.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      page: {
+        type: "number",
+        description: "Page number",
+        default: 0,
+      },
+      size: {
+        type: "number",
+        description: "Page size",
+        default: DEFAULT_PAGE_SIZE,
+      },
+    },
+    required: [],
+  },
 };
 
 const GET_ESSENTIAL_SUBSCRIPTION_BY_ID_TOOL: Tool = {
@@ -102,7 +130,8 @@ const DELETE_ESSENTIAL_SUBSCRIPTION_TOOL: Tool = {
 const GET_ESSENTIALS_PLANS_TOOL: Tool = {
   name: "get-essentials-plans",
   description:
-    "Get the available plans for essential subscriptions. Always ask for which provider the plans are want to be retrieved",
+    "Get the available plans for essential subscriptions. Always ask for which provider the plans are want to be retrieved. " +
+    "A paginated response is returned, and to get all the plans, the page and size parameters must be used until all the plans are retrieved.",
   inputSchema: {
     type: "object",
     properties: {
@@ -115,6 +144,16 @@ const GET_ESSENTIALS_PLANS_TOOL: Tool = {
         type: "boolean",
         description: "Redis Flex",
         default: false,
+      },
+      page: {
+        type: "number",
+        description: "Page number",
+        default: 0,
+      },
+      size: {
+        type: "number",
+        description: "Page size",
+        default: DEFAULT_PAGE_SIZE,
       },
     },
     required: ["provider"],
@@ -130,12 +169,39 @@ export const SUBSCRIPTIONS_ESSENTIALS_TOOLS = [
 ];
 
 export const SUBSCRIPTIONS_ESSENTIALS_HANDLERS: ToolHandlers = {
-  "get-essential-subscriptions": async () => {
-    const subscriptions = await executeApiCall(
+  "get-essential-subscriptions": async (request) => {
+    const { page = 0, size = DEFAULT_PAGE_SIZE } = extractArguments<{
+      page?: number;
+      size?: number;
+    }>(request);
+
+    // Validate input
+    validateToolInput(
+      getSubscriptionsSchema,
+      { page, size },
+      "Essential subscriptions request",
+    );
+
+    const response = await executeApiCall(
       () => SubscriptionsEssentialsService.getAllSubscriptions1(),
       "Get essential subscriptions",
     );
-    return createToolResponse(subscriptions);
+
+    const allSubscriptions = response.subscriptions || [];
+
+    // Calculate pagination
+    const startIndex = page * size;
+    const endIndex = startIndex + size;
+    const paginatedSubscriptions = allSubscriptions.slice(startIndex, endIndex);
+
+    const pageable: Pageable = {
+      page,
+      size,
+    };
+
+    return createToolResponse(
+      createPage(paginatedSubscriptions, pageable, allSubscriptions.length),
+    );
   },
 
   "get-essential-subscription-by-id": async (request) => {
@@ -178,15 +244,22 @@ export const SUBSCRIPTIONS_ESSENTIALS_HANDLERS: ToolHandlers = {
   },
 
   "get-essentials-plans": async (request) => {
-    const { provider, redisFlex } = extractArguments<{
+    const {
+      provider,
+      redisFlex,
+      page = 0,
+      size = DEFAULT_PAGE_SIZE,
+    } = extractArguments<{
       provider: "AWS" | "GCP" | "AZURE";
       redisFlex: boolean;
+      page?: number;
+      size?: number;
     }>(request);
 
     // Validate input
     validateToolInput(
       getPlansSchema,
-      { provider, redisFlex },
+      { provider, redisFlex, page, size },
       "Essential plans request",
     );
 
@@ -199,21 +272,30 @@ export const SUBSCRIPTIONS_ESSENTIALS_HANDLERS: ToolHandlers = {
       `Get essential plans for ${provider}`,
     );
 
-    // Transform response to include only relevant fields and limit to 5 plans
-    const plans = response.plans
-      .map((plan) => ({
-        id: plan.id,
-        name: plan.name,
-        size: plan.size,
-        sizeMeasurementUnit: plan.sizeMeasurementUnit,
-        regionId: plan.regionId,
-        price: plan.price,
-        priceCurrency: plan.priceCurrency,
-        pricePeriod: plan.pricePeriod,
-      }))
-      .slice(0, 5);
+    const allPlans = response.plans.map((plan) => ({
+      id: plan.id,
+      name: plan.name,
+      size: plan.size,
+      sizeMeasurementUnit: plan.sizeMeasurementUnit,
+      regionId: plan.regionId,
+      price: plan.price,
+      priceCurrency: plan.priceCurrency,
+      pricePeriod: plan.pricePeriod,
+    }));
 
-    return createToolResponse(plans);
+    // Calculate pagination
+    const startIndex = page * size;
+    const endIndex = startIndex + size;
+    const paginatedPlans = allPlans.slice(startIndex, endIndex);
+
+    const pageable: Pageable = {
+      page,
+      size,
+    };
+
+    return createToolResponse(
+      createPage(paginatedPlans, pageable, allPlans.length),
+    );
   },
 
   "create-essential-subscription": async (request) => {

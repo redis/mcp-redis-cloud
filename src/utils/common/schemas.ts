@@ -20,6 +20,8 @@ export const commonSchemas = {
   provider: z.enum(["AWS", "GCP", "AZURE"]),
   region: z.string().min(1, "region cannot be empty"),
   name: z.string().min(1, "name cannot be empty"),
+  page: z.number().min(0, "Page must be greater than or equal to 0").optional(),
+  size: z.number().min(1, "Size must be greater than 0").optional(),
 } as const;
 
 export type ToolRequest = z.infer<typeof CallToolRequestSchema>;
