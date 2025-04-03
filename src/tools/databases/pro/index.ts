@@ -425,7 +425,7 @@ export const DATABASES_PRO_HANDLERS: ToolHandlers = {
           payloadArguments.subscriptionId as never,
           payloadArguments,
         ),
-      `Create pro database using subscription #: ${payloadArguments.subscriptionId}`,
+      `Create pro database using subscription: ${payloadArguments.subscriptionId}`,
     );
 
     return createToolResponse(result);
