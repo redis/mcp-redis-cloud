@@ -402,7 +402,7 @@ export const DATABASES_PRO_HANDLERS: ToolHandlers = {
           offset,
           limit,
         ),
-      `Get pro databases for: ${subscriptionId} subscription`,
+      `Get pro databases for subscription: ${subscriptionId}`,
     );
 
     return createToolResponse(result);
