@@ -392,7 +392,7 @@ export const DATABASES_PRO_HANDLERS: ToolHandlers = {
     validateToolInput(
       getProDatabasesSchema,
       { subscriptionId, offset, limit },
-      `Get pro databases for: ${subscriptionId} subscription`,
+      `Get pro databases for subscription: ${subscriptionId}`,
     );
 
     const result = await executeApiCall(
