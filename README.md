@@ -154,3 +154,116 @@ Note: If you make changes to your code, remember to rebuild and restart Claude D
 ```bash
 npm run build
 ```
+
+## Docker Usage
+
+### Building the Docker Image
+To build the Docker image for the MCP server, run the following command:
+
+```bash
+docker build -t mcp/redis-cloud .
+```
+
+### Running the Docker Container
+To run the container, use the following command:
+
+```bash
+docker run -i --rm \
+  -e API_KEY=<your_redis_cloud_api_key> \
+  -e SECRET_KEY=<your_redis_cloud_api_secret_key> \
+  -e BASE_URL=<your_api_base_url> \
+  mcp/redis-cloud
+```
+
+
+### Adding Docker to Claude Desktop
+
+To integrate the Dockerized MCP server with Claude Desktop, follow these steps:
+
+1. Build the Docker image:
+   ```bash
+   docker build -t mcp/redis-cloud .
+   ```
+
+2. Add the server to Claude Desktop:
+   - Open Claude Desktop settings.
+   - Navigate to the Developer tab (ensure Developer Mode is enabled).
+   - Click on "Edit config".
+   - Open the `claude_desktop_config.json` file in your text editor.
+   - Add the following configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "redis-cloud": {
+         "command": "docker",
+         "args": [
+           "run",
+           "-i",
+           "--rm",
+           "-e",
+           "API_KEY=<your_redis_cloud_api_key>",
+           "-e",
+           "SECRET_KEY=<your_redis_cloud_api_secret_key>",
+           "-e",
+           "BASE_URL=<your_api_base_url>",
+           "mcp/redis-cloud"
+         ]
+       }
+     }
+   }
+   ```
+
+3. Replace `<your_redis_cloud_api_key>`, `<your_redis_cloud_api_secret_key>`, and `<your_api_base_url>` with the appropriate values.
+
+4. Save the configuration file and restart Claude Desktop.
+
+5. The Dockerized MCP server should now be available in the MCP Servers section of Claude Desktop.
+
+### Configuring Docker in Claude Desktop
+
+To integrate the Dockerized MCP server with Claude Desktop, follow these steps:
+
+1. **Build the Docker Image**:
+   Ensure the Docker image is built using the following command:
+   ```bash
+   docker build -t mcp/redis-cloud .
+   ```
+
+2. **Add the Server to Claude Desktop**:
+   - Open Claude Desktop settings.
+   - Navigate to the Developer tab (ensure Developer Mode is enabled).
+   - Click on "Edit config".
+   - Open the `claude_desktop_config.json` file in your text editor.
+   - Add the following configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "redis-cloud": {
+         "command": "docker",
+         "args": [
+           "run",
+           "-i",
+           "--rm",
+           "-e",
+           "API_KEY=<your_redis_cloud_api_key>",
+           "-e",
+           "SECRET_KEY=<your_redis_cloud_api_secret_key>",
+           "-e",
+           "BASE_URL=<your_api_base_url>",
+           "mcp/redis-cloud"
+         ]
+       }
+     }
+   }
+   ```
+
+3. **Replace Placeholder Values**:
+   Replace `<your_redis_cloud_api_key>`, `<your_redis_cloud_api_secret_key>`, and `<your_api_base_url>` with the appropriate values.
+
+4. **Restart Claude Desktop**:
+   Save the configuration file and restart Claude Desktop. The Dockerized MCP server should now be available in the MCP Servers section.
+
+### Notes
+- Ensure that the required environment variables (`API_KEY`, `SECRET_KEY`, `BASE_URL`) are set correctly.
