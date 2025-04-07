@@ -217,13 +217,6 @@ To integrate the Dockerized MCP server with Claude Desktop, follow these steps:
 
 4. Save the configuration file and restart Claude Desktop.
 
-### Cleanup
-To clean up stopped containers, dangling images, and unused volumes, run:
-
-```bash
-docker system prune -f
-```
 
 ### Notes
 - Ensure that the required environment variables (`API_KEY`, `SECRET_KEY`, `BASE_URL`) are set correctly.
-- Use `host.docker.internal` to connect to services running on the host machine if needed.
