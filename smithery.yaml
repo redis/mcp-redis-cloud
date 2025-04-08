@@ -1,0 +1,31 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - apiKey
+      - secretKey
+    properties:
+      apiKey:
+        type: string
+        description: Redis Cloud API Key
+      secretKey:
+        type: string
+        description: Redis Cloud API Secret Key
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'node',
+      args: ['dist/index.js'],
+      env: {
+        API_KEY: config.apiKey,
+        SECRET_KEY: config.secretKey
+      }
+    })
+  exampleConfig:
+    apiKey: dummy_api_key
+    secretKey: dummy_secret_key
