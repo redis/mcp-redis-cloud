@@ -189,7 +189,6 @@ To run the container, use the following command:
 docker run -i --rm \
   -e API_KEY=<your_redis_cloud_api_key> \
   -e SECRET_KEY=<your_redis_cloud_api_secret_key> \
-  -e BASE_URL=<your_api_base_url> \
   mcp/redis-cloud
 ```
 
@@ -222,8 +221,6 @@ To integrate the Dockerized MCP server with Claude Desktop, follow these steps:
            "API_KEY=<your_redis_cloud_api_key>",
            "-e",
            "SECRET_KEY=<your_redis_cloud_api_secret_key>",
-           "-e",
-           "BASE_URL=<your_api_base_url>",
            "mcp/redis-cloud"
          ]
        }
@@ -237,4 +234,4 @@ To integrate the Dockerized MCP server with Claude Desktop, follow these steps:
 
 
 ### Notes
-- Ensure that the required environment variables (`API_KEY`, `SECRET_KEY`, `BASE_URL`) are set correctly.
+- Ensure that the required environment variables (`API_KEY`, `SECRET_KEY`) are set correctly.
