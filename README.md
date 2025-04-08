@@ -1,5 +1,7 @@
 # Redis Cloud API MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@redis/mcp-redis-cloud)](https://smithery.ai/server/@redis/mcp-redis-cloud)
+
 Model Context Protocol (MCP) is a standardized protocol for managing context between large language models (LLMs) and external systems. This repository provides an MCP Server for Redis Cloud's API, allowing you to manage your Redis Cloud resources using natural language.
 
 This lets you use Claude Desktop, or any MCP Client, to use natural language to accomplish things on your Redis Cloud account, e.g.:
@@ -64,6 +66,13 @@ This lets you use Claude Desktop, or any MCP Client, to use natural language to 
 - Task IDs are returned for long-running operations and can be monitored
 - Paginated responses require multiple calls to retrieve all data
 
+### Installing via Smithery
+
+To install Redis Cloud API MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@redis/mcp-redis-cloud):
+
+```bash
+npx -y @smithery/cli install @redis/mcp-redis-cloud --client claude
+```
 
 ### Claude Desktop
 
@@ -172,3 +181,4 @@ Note: If you make changes to your code, remember to rebuild and restart Claude D
 ```bash
 npm run build
 ```
+
