@@ -1,0 +1,9 @@
+# Ignore node_modules and other unnecessary files
+node_modules
+.git
+*.log
+dist
+*.temp
+*.tmp
+.vscode
+.DS_Store
