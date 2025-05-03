@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/redis-mcp-redis-cloud-badge.png)](https://mseep.ai/app/redis-mcp-redis-cloud)
+
 # Redis Cloud API MCP Server
 
 Model Context Protocol (MCP) is a standardized protocol for managing context between large language models (LLMs) and external systems. This repository provides an MCP Server for Redis Cloud's API, allowing you to manage your Redis Cloud resources using natural language.
