@@ -145,7 +145,7 @@ const CREATE_ESSENTIAL_DATABASE_TOOL: Tool = {
       protocol: {
         type: "string",
         description:
-          "Optional. Database protocol. DO NOT SET THIS PARAMETER UNLESS EXPLICITLY REQUESTED. Default: 'redis' for Pay-As-You-Go subscriptions, 'stack' for Redis Flex subscriptions",
+          "Optional. Database protocol. Default: 'redis' for Pay-As-You-Go subscriptions, 'stack' for Redis Flex subscriptions",
         enum: ["redis", "memcached", "stack"],
       },
       datasetSizeInGb: {
