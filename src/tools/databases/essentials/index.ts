@@ -23,7 +23,7 @@ const getEssentialDatabasesSchema = z.object({
 const databaseCreateRequestSchema = z.object({
   subscriptionId: commonSchemas.subscriptionId,
   name: z.string(),
-  // DO NOT set protocol unless explicitly requested
+  // DO NOT set optional parameters unless explicitly requested
   protocol: z
     .union([z.literal("redis"), z.literal("memcached"), z.literal("stack")])
     .optional(),
