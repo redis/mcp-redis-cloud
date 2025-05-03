@@ -124,7 +124,7 @@ const CREATE_ESSENTIAL_DATABASE_TOOL: Tool = {
   description:
     "Create a new essential database inside the specified subscription ID. Returns a TASK ID that can be used to track the status of the database creation. " +
     "IMPORTANT GUIDELINES: " +
-    "1) DO NOT set the protocol parameter unless explicitly requested. " +
+    "1) DO NOT set optional parameters unless explicitly requested. " +
     "2) Modules can only be selected if protocol is 'redis'. " +
     "3) When creating a free database, first call the get-essential-subscriptions tool to check if a free database already exists (each account is limited to one free database). " +
     "4) For database modules, validate against get-database-modules list. " +
