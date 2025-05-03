@@ -22,6 +22,10 @@ import {
   DATABASES_PRO_HANDLERS,
   DATABASES_PRO_TOOLS,
 } from "./tools/databases/pro/index.js";
+import {
+  DATABASES_ESSENTIALS_HANDLERS,
+  DATABASES_ESSENTIALS_TOOLS,
+} from "./tools/databases/essentials/index.js";
 
 process.on("uncaughtException", (error) => {
   log("Uncaught exception:", error);
@@ -39,6 +43,7 @@ const ALL_TOOLS = [
   ...SUBSCRIPTIONS_ESSENTIALS_TOOLS,
   ...TASKS_TOOLS,
   ...DATABASES_PRO_TOOLS,
+  ...DATABASES_ESSENTIALS_TOOLS,
 ];
 
 const ALL_HANDLERS = {
@@ -47,6 +52,7 @@ const ALL_HANDLERS = {
   ...SUBSCRIPTIONS_PRO_HANDLERS,
   ...TASKS_HANDLERS,
   ...DATABASES_PRO_HANDLERS,
+  ...DATABASES_ESSENTIALS_HANDLERS,
 };
 
 const server = new Server(
